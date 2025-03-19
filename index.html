@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+</head>
+
+<body
+  class="h-screen bg-[#2c2c3c] text-white grid grid-rows-[auto_1fr_auto] md:grid-rows-[auto_1fr_auto] overflow-auto">
+
+  <header class="row-start-3 md:row-start-1 self-start shadow-md">
+    <div class="text-start px-5 py-3 flex justify-between items-center">
+      <div>
+        <button id="generate-html" 
+          class="bg-[#a57ff4] text-[#6ef2d0] px-5 py-3 rounded-lg flex gap-1 
+          shadow-lg transition-shadow duration-700 ease-out 
+          active:shadow-[0_0_25px_#d8b6ff] font-bold">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6ef2d0" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+          </svg>Ejecutar
+        </button>
+      </div>
+      <div>
+        <button id="toggle-contrast" 
+          class="bg-[#6ef2d0] text-[#574a87] px-3 py-1 rounded-xl flex gap-1 ml-3 
+          shadow-lg transition-shadow delay-150 duration-700 ease-out 
+          active:shadow-[0_0_25px_#a8ffe0] font-bold">
+          Contrastar H#
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  
+  <main class="row-start-2 w-full h-full">
+    <article class="grid grid-cols-1 gap-3 md:grid-cols-2 h-full p-4 overflow-auto">
+      <section class="h-full bg-black">
+        <textarea id="markdown-input" class="w-full h-full p-2 font-mono border border-[#a57ff4] rounded resize-none outline-none"
+          placeholder="Escribe tu código Markdown aquí..."></textarea>
+      </section>
+      <section id="preview-section" class="p-2 border border-[#6ef2d0] rounded space-y-3 h-full bg-black overflow-auto">
+      </section>
+    </article>
+  </main>
+  <footer class="hidden"></footer>
+  <script src="./js/app.js"></script>
+</body>
+</html>
