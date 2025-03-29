@@ -7,11 +7,10 @@ const previewSection = document.querySelector("#preview-section");
 
 export function getTextFromTextArea() {
     const text = markdownInput.value;
-    if (text === "") {
+    /*if (text === "") {
       alert("Debe ingresar un texto para poder generar el MD");
       return; // termine la ejecución luego de mostrar la alert
-    }
-    
+    }*/
     convertToHtml(text);
   }
 
