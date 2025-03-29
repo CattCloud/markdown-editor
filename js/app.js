@@ -5,19 +5,28 @@ import { getSelectedText } from './block.js';
 /**
  * Variables para obtener elementos HTML
  */
-const generateHtml = document.querySelector("#generate-html");
+//const generateHtml = document.querySelector("#generate-html");
 const toggleContrastButton = document.getElementById("toggle-contrast");
 const markdownInput = document.querySelector("#markdown-input");
 const previewSection = document.querySelector("#preview-section");
+const wordCount=document.getElementById("word-count");
+const charCount=document.getElementById("char-count");
 const toggleStyleTextButton=document.getElementById("toggle-styleText");
+const cleanButton=document.getElementById("btn-clean");
 let textSelect="";
 let startTextSelect,endTextSelect=0;
 
-// TODO: Cuando hagamos click en el boton generateHtml, tenemos que obtener el texto del textarea y trasnformalo a HTML y eso mostrarlo el preview
+
+/*
 generateHtml.addEventListener("click", function () {
   getTextFromTextArea(); // Obtiene el value del textarea
 });
-
+*/
+function resetValores(){
+  textSelect = "";
+  startTextSelect = 0;
+  endTextSelect = 0;
+}
 
 //Manejador de eventos cuando realizas una seleccion dentro del TextArea
 markdownInput.addEventListener("select", function (event) {
@@ -51,6 +60,10 @@ toggleContrastButton.addEventListener("click", () => {
 });
 
 
+//Manejo del evento cuando escribes en el textArea
+markdownInput.addEventListener("input", function () {
+  getTextFromTextArea(); // Obtiene el value del textarea
+});
 
 
 toggleStyleTextButton.addEventListener("click",function(event){
@@ -67,9 +80,32 @@ document.body.addEventListener("mousedown", function (event) {
     event.target !== toggleStyleTextButton // No está en el botón de cambiar estilo
   ) {
     // Reiniciar valores de selección
-    textSelect = "";
-    startTextSelect = 0;
-    endTextSelect = 0;
+    resetValores();
     console.log("Fragmento deseleccionado. Valores reiniciados.");
   }
+});
+
+
+
+cleanButton.addEventListener("click",function(event){
+    markdownInput.value=""
+    previewSection.innerHTML=""
+    resetValores();
+    markdownInput.focus(); // Asegura que el textarea reciba el foco nuevamente
+});
+
+
+// Función para actualizar el contador
+const updateCounter = () => {
+  const text = markdownInput.value.trim();
+  wordCount.textContent = `Palabras: ${text ? text.split(/\s+/).length : 0}`;
+  charCount.textContent = `Caracteres: ${text.length}`;
+};
+
+// Agregar eventos para capturar cualquier ingreso o modificación del texto
+["input", "paste", "drop", "cut"].forEach(event => {
+  markdownInput.addEventListener(event, () => {
+    updateCounter(); // Se usa setTimeout para capturar el texto después del evento
+    getTextFromTextArea();
+  });
 });
