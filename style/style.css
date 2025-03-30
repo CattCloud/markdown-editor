@@ -1,0 +1,75 @@
+    /* Estilos para modo claro */
+    body {
+        background-color: #ffffff;
+      }
+
+    
+      /* Estilos para modo oscuro */
+    html.dark body {
+        background-color: #2c2c3c;
+    }
+
+
+
+    .icon-markdown:hover{
+        background-color: #6df2d2;
+    }
+
+    html.dark .icon-markdown:hover{
+        background-color:#564b82 ;
+    }
+    
+
+
+    #fileModal{
+        background-color: whitesmoke;
+    }
+
+    html.dark #fileModal{
+        background-color: black;
+    }
+
+
+    #editor_section,#preview-section{
+        background-color: whitesmoke;
+        color: black;
+    }
+
+    html.dark #editor_section,html.dark #preview-section{
+        background-color: black;
+        color: whitesmoke;
+
+    }
+
+    #pdfFilename{
+        border: 2px solid #564b82;
+        color: #2c2c3c;
+    }
+
+    html.dark #pdfFilename{
+        border: 2px solid #6df2d2;
+        color: white;
+
+    }
+
+
+    #dropdown-menu{
+        background-color: white;
+        color: #564b82;
+    }
+
+    html.dark #dropdown-menu{
+        background-color: #2c2c3c;
+        color: #6df2d2;
+    }
+
+    .option-heading:hover{
+        background-color: #6df2d2;
+
+    }
+
+    html.dark .option-heading:hover{
+        background-color: #564b82; 
+
+
+    }

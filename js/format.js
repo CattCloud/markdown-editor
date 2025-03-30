@@ -128,23 +128,48 @@ function convertStyleText(html) {
 }
 
 
-
 function convertToHtml(text) {
-    let html = text;
-    // evaluamos titulo
-    html = convertHeadings(html);
-    
-    // evaluamos negrita y cursiva
-    html = convertStyleText(html);
+  return new Promise((resolve) => {
+    try {
+      let html = text;
 
-    
-    //evaluamos code
-    html=convertCodeBlocks(html);
+      // Aplicamos transformaciones con manejo de errores en cada una
+      html = safeConvert(html, convertHeadings, "Error al convertir encabezados");
+      html = safeConvert(html, convertStyleText, "Error al aplicar negrita y cursiva");
+      html = safeConvert(html, convertCodeBlocks, "Error al procesar bloques de código");
+      html = safeConvert(html, convertLists, "Error al convertir listas");
 
-    // evaluamos listas
-    html = convertLists(html);
+      renderPreview(html); // Muestra el HTML en el preview
 
-    renderPreview(html); // HTML lo muestra en el preview
+      showNotification("Transformación completada con éxito", "success");
+      resolve();
+    } catch (error) {
+      console.error("Error general en la transformación:", error);
+      showNotification("Error inesperado en la conversión", "error");
+      resolve();
+    }
+  });
+}
+
+// Función genérica para manejar errores en las transformaciones individuales
+function safeConvert(text, conversionFunction, errorMessage) {
+  try {
+    return conversionFunction(text);
+  } catch (error) {
+    console.error(errorMessage, error);
+    showNotification(errorMessage, "warning");
+    return text; // Retorna el texto sin modificar para que el proceso continúe
+  }
+}
+
+// Simulación de notificación en UI
+function showNotification(message, type) {
+  const notification = document.createElement("div");
+  notification.className = `notification ${type}`;
+  notification.innerText = message;
+  document.body.appendChild(notification);
+
+  setTimeout(() => notification.remove(), 3000); // Eliminar después de 3s
 }
 
 //Renderizamos para que se muestre el codigo
@@ -172,13 +197,19 @@ export function formatHeading(){
 }
 
 
-export function toggleTextFormat(startTextSelect, endTextSelect) {
+
+export function detectTextFormat(typeformat,startTextSelect, endTextSelect) {
   let tipeStyle = ""; // Inicializamos el tipo de estilo
   //Si el inicio del texto seleccionado es 0 entonces no tiene estilo pq no esta rodeado por asteriscos
   if(startTextSelect>0){
     if (markdownInput.value.substring(startTextSelect-1, startTextSelect) == "*" && markdownInput.value.substring(endTextSelect, endTextSelect+1) =="*") {
       if (startTextSelect>1 && markdownInput.value.substring(startTextSelect-2, startTextSelect-1) == "*" && markdownInput.value.substring(endTextSelect+1, endTextSelect+2) =="*") {
-        tipeStyle = "bold"; // Rodeado por dos asteriscos (**texto**)
+        if (startTextSelect>2 && markdownInput.value.substring(startTextSelect-3, startTextSelect-2) == "*" && markdownInput.value.substring(endTextSelect+2, endTextSelect+3) =="*") {
+          tipeStyle = "bold&italic"; // Rodeado por dos asteriscos (**texto**)
+        }
+        else{
+          tipeStyle = "bold"; // Rodeado por dos asteriscos (**texto**)
+        }
       } else {
         tipeStyle = "italic"; // Rodeado por un asterisco (*texto*)
       }
@@ -188,25 +219,49 @@ export function toggleTextFormat(startTextSelect, endTextSelect) {
   }else{
     tipeStyle = "none"; // Sin formato
   }
-  console.log(`Tipo de estilo detectado: ${tipeStyle}`);
-  aplicationFormatStyle(tipeStyle,startTextSelect,endTextSelect);
+  //console.log(`Tipo de estilo detectado: ${tipeStyle}`);
+  if(typeformat=="bold"){
+    aplicationFormatBold(tipeStyle,startTextSelect,endTextSelect);
+  }else{
+    aplicationFormatItalic(tipeStyle,startTextSelect,endTextSelect);
+  }
 }
 
 
-function aplicationFormatStyle(typeStyle,startTextSelect,endTextSelect){
+
+
+
+function aplicationFormatBold(typeStyle,startTextSelect,endTextSelect){
   let textSelect=markdownInput.value.substring(startTextSelect, endTextSelect);
   switch (typeStyle){
     case "none":
+    case "italic":
       markdownInput.value = markdownInput.value.substring(0,startTextSelect)+`**${textSelect}**`+markdownInput.value.substring(endTextSelect);
       startTextSelect=startTextSelect+2;
       endTextSelect=endTextSelect+2;
       break;
-    case "italic"://En el caso de italic tiene un asterisco,debo adicionar un asterisco para que sea negrita
+    case "bold"://En el caso de bold tiene dos asteriscos,debo quitar los dos asteriscos
+    case "bold&italic":
+      markdownInput.value = markdownInput.value.substring(0,startTextSelect-2)+textSelect+markdownInput.value.substring(endTextSelect+2);
+      startTextSelect=startTextSelect-2;
+      endTextSelect=endTextSelect-2;
+      break;
+  }
+    markdownInput.setSelectionRange(startTextSelect, endTextSelect);
+    markdownInput.focus(); // Asegura que el textarea reciba el foco nuevamente, no quita la seleccion
+}
+
+function aplicationFormatItalic(typeStyle,startTextSelect,endTextSelect){
+  let textSelect=markdownInput.value.substring(startTextSelect, endTextSelect);
+  switch (typeStyle){
+    case "none":
+    case "bold":
       markdownInput.value = markdownInput.value.substring(0,startTextSelect)+`*${textSelect}*`+markdownInput.value.substring(endTextSelect);
       startTextSelect=startTextSelect+1;
       endTextSelect=endTextSelect+1;
       break;
-    case "bold": //En el caso de bold tiene dos asteriscos,debo quitar un asterisco osea cortar
+    case "italic": //En el caso de bold tiene un asterisco,debo quitar el asterisco
+    case "bold&italic":
       markdownInput.value = markdownInput.value.substring(0,startTextSelect-1)+textSelect+markdownInput.value.substring(endTextSelect+1);
       startTextSelect=startTextSelect-1;
       endTextSelect=endTextSelect-1;
