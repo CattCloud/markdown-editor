@@ -56,5 +56,51 @@ Se implementó la exportación del documento a PDF de forma asíncrona usando `h
 
 
 ---
+## 📝 Historias de Usuario Implementadas
+
+### HU: Botón de Alternancia de Vista entre Editor y Previsualización
+**Como usuario, quiero alternar entre la vista de edición y previsualización para mejorar mi experiencia de uso.**
+
+#### ✅ Criterios de Aceptación:
+- En escritorio: alternar entre editor expandido y vista dividida (50-50).
+- En móvil: mostrar solo el editor o solo la previsualización según el estado actual.
+- Cambio de estado con cada clic.
+- Persistencia del estado en cambios de tamaño de ventana.
+
+#### 🔹 Implementación
+Se manejó la alternancia con clases CSS y `window.innerWidth` para detectar si el usuario está en móvil o escritorio.
+
+---
+
+### HU: Botón de Heading, Bold e Italic
+**Como usuario, quiero un botón que me permita insertar encabezados (H2, H3), negrita y cursiva,** para mejorar la velocidad de escritura de código Markdown.
+
+#### Criterios de Aceptación:
+- Un botón permite insertar headings sin escribir manualmente `##` o `###`.
+- Botones adicionales permiten aplicar formato de **negrita** y *cursiva* sobre un texto seleccionado.
+- Si un texto ya tiene formato, al presionar el botón correspondiente, el formato se elimina (efecto toggle).
+- El cursor debe ubicarse correctamente después de insertar el formato.
+
+---
+
+## Decisiones Técnicas Clave
+
+- **Promesas y `async/await`**: Se usaron para manejar procesos asíncronos sin bloquear la aplicación.
+  
+- **Manejo de excepciones**: Se usaron `try/catch` y `.catch()` en promesas para evitar que errores detengan la app.
+  
+- **Adaptabilidad (Responsividad)**: Se usaron clases de Tailwind CSS para garantizar una UI adaptable en escritorio y móvil.
+  
+- **Estructura Modular**: Se separaron las funciones en módulos reutilizables para mejorar mantenibilidad.
+
+- **Uso de `dataset` para asignar tags a los botones de heading.** Se asignaron atributos `data-tag` a cada opción para facilitar la detección del tipo de encabezado seleccionado sin necesidad de condicionales extensos.
+
+- **Detección y manipulación de la selección del usuario.** Se usaron `setSelectionRange` y `focus()` para preservar la selección del usuario y mejorar la experiencia de edición.
+
+- **Lógica de detección de formato Markdown.** Se implementó una función para analizar si un texto seleccionado ya contiene formato y actuar en consecuencia (por ejemplo, eliminar los asteriscos si ya está en negrita en lugar de añadir más).
+
+- **Compatibilidad con dispositivos móviles.** Se aseguró que el botón de alternancia de vista responda adecuadamente según el tamaño de la pantalla, utilizando `window.innerWidth` y `resize` para ajustes dinámicos.
+
+[Enlace a web de proyecto](https://cattcloud.github.io/markdown-editor/)
 
 
