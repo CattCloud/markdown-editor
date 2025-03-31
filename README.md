@@ -101,6 +101,6 @@ Se manejó la alternancia con clases CSS y `window.innerWidth` para detectar si 
 
 - **Compatibilidad con dispositivos móviles.** Se aseguró que el botón de alternancia de vista responda adecuadamente según el tamaño de la pantalla, utilizando `window.innerWidth` y `resize` para ajustes dinámicos.
 
-
+[Enlace a web de proyecto](https://cattcloud.github.io/markdown-editor/)
 
 
