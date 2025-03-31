@@ -19,7 +19,6 @@ const exportPdfButton=document.getElementById("btn-exportar-pdf");
 const boldTextButton=document.getElementById("btn-boldtext");
 const italicTextButton=document.getElementById("btn-italictext");
 //const modeDarkLightButton=document.getElementById("btn-mode");
-const pdfFilenameInput = document.getElementById("pdfFilename");
 const headingButton = document.getElementById("dropdown-btn");
 const headingOptionMenu = document.querySelectorAll("#dropdown-menu button");
 

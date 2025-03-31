@@ -1,38 +1,4 @@
 /*----------------------------------Funcion para Exportar PDF----------------------------------------*/
-
-// Función para exportar el PDF
-export function exportToPDF() {
-    const filename = pdfFilenameInput.value.trim() || "documento"; // Nombre por defecto si está vacío
-  
-    showLoadingSpinner(); // Mostrar el spinner
-  
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        html2pdf()
-          .from(previewSection)
-          .set({
-            margin: 10,
-            filename: filename + ".pdf",
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-          })
-          .save()
-          .then(() => {
-            hideLoadingSpinner(); // Ocultar el spinner cuando se completa
-            resolve();
-          })
-          .catch((error) => {
-            hideLoadingSpinner();
-            alert("No se pudo generar el PDF");
-            reject(error);
-          });
-      }, 5000); // Simulación de proceso asíncrono
-    });
-  }
-
-
-  
   // Función para mostrar el spinner
   function showLoadingSpinner() {
     const modal = document.createElement("div");
@@ -67,5 +33,41 @@ export function readFileAsync(file) {
       reader.readAsText(file);
     });
 }
+
+  
+// Función para exportar el PDF
+export function exportToPDF() {
+  const pdfFilenameInput = document.getElementById("pdfFilename");
+  const previewSection = document.querySelector("#preview-section");
+
+    const filename = pdfFilenameInput.value.trim() || "documento"; // Nombre por defecto si está vacío
+  
+    showLoadingSpinner(); // Mostrar el spinner
+  
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        html2pdf()
+          .from(previewSection)
+          .set({
+            margin: 10,
+            filename: filename + ".pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          })
+          .save()
+          .then(() => {
+            hideLoadingSpinner(); // Ocultar el spinner cuando se completa
+            resolve();
+          })
+          .catch((error) => {
+            hideLoadingSpinner();
+            alert("No se pudo generar el PDF");
+            reject(error);
+          });
+      }, 2000); // Simulación de proceso asíncrono
+    });
+  }
+
 
   
