@@ -323,3 +323,60 @@ const updateCounter = () => {
       console.error("Error al exportar PDF:", error);
     }
   });
+
+
+
+ // Toggle functionality
+ const btnVisualize = document.getElementById('btn-visualize');
+ const editorSection = document.getElementById('editor_section');
+ 
+ // Track expanded state
+ let isEditorExpanded = true;
+ 
+ btnVisualize.addEventListener('click', () => {
+   // Check if we're in mobile or desktop mode
+   const isMobile = window.innerWidth < 640; // sm breakpoint in Tailwind (640px)
+   
+   if (isMobile) {
+     // Mobile toggle: show either editor or preview, never both
+     editorSection.classList.toggle('hidden');
+     previewSection.classList.toggle('hidden');
+   } else {
+     // Desktop toggle: either 50-50 or full editor
+     if (isEditorExpanded) {
+       // Switch to 50-50
+       editorSection.classList.remove('sm:col-span-2');
+       previewSection.classList.remove('sm:hidden');
+     } else {
+       // Switch to full editor
+       editorSection.classList.add('sm:col-span-2');
+       previewSection.classList.add('sm:hidden');
+     }
+     isEditorExpanded = !isEditorExpanded;
+   }
+ });
+ 
+ // Initial setup for mobile
+ if (window.innerWidth < 640) {
+   previewSection.classList.add('hidden');
+ }
+ 
+ // Listen for window resize to adjust layout
+ window.addEventListener('resize', () => {
+   const isMobile = window.innerWidth < 640;
+   
+   if (isMobile) {
+     // Reset to mobile defaults if resizing to mobile
+     editorSection.classList.remove('hidden');
+     previewSection.classList.add('hidden');
+   } else {
+     // Reset to desktop defaults if resizing to desktop
+     if (isEditorExpanded) {
+       editorSection.classList.add('sm:col-span-2');
+       previewSection.classList.add('sm:hidden');
+     } else {
+       editorSection.classList.remove('sm:col-span-2');
+       previewSection.classList.remove('sm:hidden');
+     }
+   }
+ });

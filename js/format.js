@@ -141,7 +141,7 @@ function convertToHtml(text) {
 
       renderPreview(html); // Muestra el HTML en el preview
 
-      showNotification("Transformación completada con éxito", "success");
+      //showNotification("Transformación completada con éxito", "success");
       resolve();
     } catch (error) {
       console.error("Error general en la transformación:", error);
